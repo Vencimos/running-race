@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<head>
+  <meta charset="UTF-8">
+  <title>Running Application</title>
+</head>
+<body>
+<h1>Welcome To Running Race Application</h1>
+<a href="/getRunners" class="btn btn-primary">View all Runners</a>
+<a href="/add" class="btn btn-success">Add new Runner</a>
+
+<div th:if="${message != null}" class="alert alert-success text-center mb-2">
+  [[${message}]]
+</div>
+
+<h3>Race Results</h3>
+<div th:each="race : ${races}">
+  <a class="btn btn-warning mb-1" th:href="@{'/getRaceRunners/' + ${race.id}}">[[${race.name}]]</a>
+</div>
+
+</body>
+</html>
