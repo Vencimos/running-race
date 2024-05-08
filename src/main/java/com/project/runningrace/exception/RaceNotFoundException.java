@@ -1,4 +1,4 @@
-package com.project.runningrace;
+package com.project.runningrace.exception;
 
 public class RaceNotFoundException extends Exception {
 

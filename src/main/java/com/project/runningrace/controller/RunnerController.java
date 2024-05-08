@@ -3,12 +3,12 @@ package com.project.runningrace.controller;
 import com.project.runningrace.entity.Runner;
 import com.project.runningrace.service.RunnerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -20,28 +20,17 @@ public class RunnerController {
     private RunnerService runnerService;
 
     @GetMapping("/getRunners")
-    public String getAllRunners(Model model) {
+    public ResponseEntity<List<Runner>> getAllRunners() {
         List<Runner> runners = runnerService.getAllRunners();
-        model.addAttribute("runners", runners);
-        return "runners";
-    }
-
-    @GetMapping("/add")
-    public String goToRunnerForm(Model model) {
-        Runner runner = new Runner();
-
-        model.addAttribute("runner", runner);
-        return "runner_form";
+        return ResponseEntity.ok().body(runners);
     }
 
     @PostMapping("/addRunner")
-    public String addRunner(@Valid Runner newRunner, BindingResult bindingResult, RedirectAttributes rA) {
+    public ResponseEntity<String> addRunner(@Valid @RequestBody Runner newRunner, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            rA.addFlashAttribute("message", "All the fields are required!");
-            return "redirect:runner_form";
+            throw new IllegalArgumentException("One or more attributes are missing");
         }
-        rA.addFlashAttribute("message", "New runner successfully added");
         runnerService.addRunner(newRunner);
-        return "redirect:/getRunners";
+        return ResponseEntity.ok("Runner added successfully");
     }
 }

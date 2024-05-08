@@ -3,10 +3,10 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <head>
     <meta charset="UTF-8">
-    <title>Running Race</title>
+    <title>Race List</title>
 </head>
 <body>
-<h1 class="mb-2">List of Runners</h1>
+<h1 class="mb-2">All Races</h1>
 
 <div th:if="${message != null}" class="alert alert-success text-center mb-2">
     [[${message}]]
@@ -17,22 +17,20 @@
     <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Age</th>
-        <th>Gender</th>
+        <th>Distance</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="runner : ${runners}">
-        <td th:text="${runner.id}"></td>
-        <td th:text="${runner.name}"></td>
-        <td th:text="${runner.age}"></td>
-        <td th:text="${runner.gender}"></td>
+    <tr th:each="race : ${raceList}">
+        <td th:text="${race.id}"></td>
+        <td th:text="${race.name}"></td>
+        <td th:text="${race.distance}"></td>
     </tr>
     </tbody>
 </table>
 <div class="text-center">
-    <a href="/" class="btn btn-primary">Home</a>
-    <a href="/add" class="btn btn-success">Add new Runner</a>
+    <a th:href="@{/}" class="btn btn-danger">Back</a>
+    <a th:href="@{/add}" class="btn btn-success">Add new Race</a>
 </div>
 </body>
 </html>

@@ -1,14 +1,12 @@
 package com.project.runningrace.service;
 
-import com.project.runningrace.ResultNotFoundException;
+import com.project.runningrace.exception.ResultNotFoundException;
 import com.project.runningrace.entity.Result;
 import com.project.runningrace.repository.ResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.module.ResolutionException;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class ResultService {
@@ -21,6 +19,18 @@ public class ResultService {
     }
 
     public List<Result> getRaceRunners(Integer raceId) throws ResultNotFoundException {
-            return resultRepository.findByRaceIdOrderByTimeInMinutesAsc(raceId);
+        return resultRepository.findByRaceIdOrderByTimeInMinutesAsc(raceId);
+    }
+
+    public double calculateAverageResult(Integer id) throws ResultNotFoundException {
+        List<Result> resultList = resultRepository.findByRaceId(id);
+        if (resultList.isEmpty()) {
+            throw new ResultNotFoundException("Could not find any result with race id: " + id);
+        }
+        int totalMinutes = resultList.stream()
+                .mapToInt(Result::getTimeInMinutes)
+                .sum();
+
+        return (double) totalMinutes / resultList.size();
     }
 }
